@@ -1,0 +1,27 @@
+html, body{
+     margin: 0;
+    padding: 0;
+    background-image: url("img/table.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "Exo 2", sans-serif;
+    height: 100vh;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+button{
+    font-size: 1rem;
+    background-color: yellow;
+    padding: 5px;
+    border:none;
+    cursor: pointer;
+}
+
+#new-deck{
+    align-self: flex-start;
+}
