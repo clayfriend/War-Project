@@ -7,47 +7,47 @@ const myScore = document.getElementById("my-score");
 const winnerText = document.getElementById("winner-text");
 const computerScore = document.getElementById("computer-score");
 
-function handleClick() {
-  fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
-    .then((res) => res.json())
-    .then((data) => {
-      remainText.textContent = `Remained Card: ${data.remaining}`;
-      deckId = data.deck_id;
-    });
+async function handleClick() {
+  const res = await fetch(
+    "https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/"
+  );
+  const data = await res.json();
+  remainText.textContent = `Remained Card: ${data.remaining}`;
+  deckId = data.deck_id;
 }
 
 document.getElementById("new-deck").addEventListener("click", handleClick);
 
-drawButton.addEventListener("click", () => {
+drawButton.addEventListener("click", async () => {
   if (!deckId) {
     alert("Please First click the New Deck");
     return;
   }
-  fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.cards.length < 2) {
-        disableButton(data.remaining);
-        return;
-      }
-      const computerCard = data.cards[0];
-      const playerCard = data.cards[1];
+  const res = await fetch(
+    `https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`
+  );
+  const data = await res.json();
+  if (data.cards.length < 2) {
+    disableButton(data.remaining);
+    return;
+  }
+  const computerCard = data.cards[0];
+  const playerCard = data.cards[1];
 
-      remainText.textContent = `Remain Cards: ${data.remaining}`;
+  remainText.textContent = `Remain Cards: ${data.remaining}`;
 
-      const cardSlot = document.getElementById("cards").children;
-      cardSlot[0].innerHTML = `
+  const cardSlot = document.getElementById("cards").children;
+  cardSlot[0].innerHTML = `
             <img src=${data.cards[0].image} class="card">      
         `;
-      cardSlot[1].innerHTML = `     
+  cardSlot[1].innerHTML = `     
             <img src=${data.cards[1].image} class="card">      
         `;
-      const result = determineWinner(computerCard, playerCard);
-      winnerText.textContent = result;
-      computerScore.textContent = `Computer score: ${computerScoreCard}`;
-      myScore.textContent = `Computer score: ${myScoreCard}`;
-      disableButton(data.remaining);
-    });
+  const result = determineWinner(computerCard, playerCard);
+  winnerText.textContent = result;
+  computerScore.textContent = `Computer score: ${computerScoreCard}`;
+  myScore.textContent = `Computer score: ${myScoreCard}`;
+  disableButton(data.remaining);
 });
 
 function disableButton(remained) {
